@@ -28,31 +28,33 @@ export const mailOtpGenerator = async (data) => {
 
     // Generate OTP
     const otp = generateOTP(6);
+    console.log(otp)
     const now = new Date();
-    const expiration_time = AddMinutesToDate(now, 10);
+    const expiration_time = AddMinutesToDate(now, 1);
+    console.log(expiration_time);
 
     const salt = await bcrypt.genSalt(10);
     const otpEncrypt = await bcrypt.hash(otp.toString(), salt);
 
-    data = { ...data, otpEncrypt };
+    data = { ...data, otpEncrypt,expiration_time };
 
     console.log(data);
 
     const otpSecretKey = process.env.OTP_SECRET_KEY;
 
     const otpToken = jwt.sign(
-      { name: data.name, email: data.email, OTP: data.otpEncrypt,password:data.password },
+      { name: data.name, email: data.email, OTP: data.otpEncrypt,password:data.password,expirationtime:data.expiration_time},
       otpSecretKey
     );
 
     console.log(otpToken);
 
     const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
+      host: 'smtp.gmail.com',
+      port: 465,
       auth: {
-        user: 'louisa.welch@ethereal.email',
-        pass: 'KBp4YJQ41SSCdRqNNW'
+        user: `${process.env.EMAIL_ADDRESS}`,
+        pass: `${process.env.EMAIL_PASSWORD}`
       }
     });
 

@@ -8,21 +8,13 @@ import jwt from 'jsonwebtoken';
 export const verifyOtp=(otpData)=>{
 
     console.log(otpData)
-    const {otp,otpToken}=otpData;
-
-    const tokenData=jwt.decode(otpToken);
+    const {otp,otptoken}=otpData;
+   
+    const tokenData=jwt.decode(otptoken);
     console.log(tokenData);
 
-    const user={
-        name:tokenData.name,
-        email:tokenData.email,
-        password:tokenData.password
-    }
 
     const hashOtp=tokenData.OTP;
-
-    console.log(hashOtp);
-    console.log(otp);
 
     const otpVerified=bcrypt.compareSync(otp,hashOtp);
     
@@ -31,4 +23,9 @@ export const verifyOtp=(otpData)=>{
     return otpVerified;
 
 }
+
+
+
+
+
 

@@ -1,11 +1,11 @@
 import joi from 'joi';
 import jwt from "jsonwebtoken"
-import {users} from "../model/user.js";
+import {users} from "../../model/user.js";
 import bcrypt from "bcrypt";
 import { genSalt } from 'bcrypt';
 import dotenv  from "dotenv";
-import {mailOtpGenerator} from "../helpers/otp/mailOtpGenerator.js"
-import { verifyOtp } from '../helpers/otp/verifyOtp.js';
+import {mailOtpGenerator} from "../../helpers/otp/mailOtpGenerator.js"
+import { verifyOtp } from '../../helpers/otp/verifyOtp.js';
 dotenv.config();
 
 const secretKey=process.env.JWT_SECRET_KEY;
@@ -23,10 +23,8 @@ const signUp=async(req,res)=>{
 })
 const {error} = Schema.validate(req.body);
 
-console.log("hellooo")
 if(error) {
     console.log("validation error")
-//    return res.status(400).send(error.details[0].message);
   return res.status(400).json({
         success:false,
         message:error.details[0].message
@@ -54,7 +52,9 @@ if(error) {
     mailOtpGenerator(user).then((response=>{
 
         console.log(response+" iam in constrollers");
-        res.send(response);
+        res.json({
+            token:response
+        })
     }))
 
     
@@ -77,7 +77,7 @@ if(error) {
 
 const verifyotp=async(req,res)=>{
     const otpData=req.body;
-    const {otp,otpToken}=otpData;
+    const {otp,otptoken}=otpData;
     console.log(otpData," in controllers")
     const otpVerified=verifyOtp(otpData);
     if(!otpVerified) return  res.status(400).json({
@@ -85,7 +85,8 @@ const verifyotp=async(req,res)=>{
         message:"Otp verification failed"
        });
 
-       const tokenData=jwt.decode(otpToken);
+
+    const tokenData=jwt.decode(otptoken);
     console.log(tokenData);
 
     const user=new users({
@@ -109,57 +110,58 @@ const verifyotp=async(req,res)=>{
 }
 
 const login=async(req,res)=>{
-    const Schema=joi.object({
+   
+        const Schema=joi.object({
+       
         email:joi.string().min(3).max(200).email().required(),
         password:joi.string().min(6).max(100).required(),
        
     
     })
     const {error} = Schema.validate(req.body);
-    
     if(error) {
-        return res.status(400).json({
+        console.log("validation error")
+      return res.status(400).json({
             success:false,
             message:error.details[0].message
         });
     
     }
-  try{
-    let user= await users.findOne({email:req.body.email});
 
-    if(!user){
+    const {email,password}=req.body;
+
+    let user= await users.findOne({email:email});
+    if(!user) {
+       return  res.status(400).json({
+        success:false,
+        message:"invalid email or password"
+       });
+    }
+
+    let verified=bcrypt.compareSync(password,user.password);
+
+    if(!verified){
         return  res.status(400).json({
             success:false,
-            message:"Invalid email or password"
+            message:"invalid email or password"
            });
     }
-    const password=req.body.password;
-    const validPassword=bcrypt.compare(password,user.password);
-
-    if(!validPassword) return  res.status(400).json({
-        success:false,
-        message:"Invalid email or password"
-       });
 
     const token=jwt.sign({_id:user._id,name:user.name,email:user.email},secretKey);
+
+
 
     return res.json({
         success:true,
         token:token,
-        message:"login success"
+        message:"Login successfull"
     })
 
-
-}catch(error){
-    res.status(500).json({
-        success:false,
-        message:error.message
-    });
-    console.log(error.message);
+ 
 }
 
 
 
-}
 
-export {signUp,login,verifyotp};
+
+export {signUp,verifyotp,login};
