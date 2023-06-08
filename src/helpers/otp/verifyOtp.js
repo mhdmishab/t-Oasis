@@ -9,7 +9,7 @@ export const verifyOtp=(otpData)=>{
 
     console.log(otpData)
     const {otp,otptoken}=otpData;
-   
+    console.log(otptoken);
     const tokenData=jwt.decode(otptoken);
     console.log(tokenData);
 

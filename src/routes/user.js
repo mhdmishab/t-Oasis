@@ -1,6 +1,6 @@
 import express from "express";
 
-import {signUp,login,verifyotp} from "../controllers/user/user.js"
+import {signUp,login,verifyotp, resendOtp} from "../controllers/user/user.js"
 
 
 const user=express.Router();
@@ -8,10 +8,8 @@ const user=express.Router();
 
 user.post('/signup',signUp);
 user.post('/login',login);
-user.get('/',(req,res)=>{
-    res.send("home");
-})
 user.post('/verifyotp',verifyotp);
+user.post('/resendotp',resendOtp);
 
 export default user;
 

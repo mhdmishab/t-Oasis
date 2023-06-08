@@ -13,10 +13,12 @@ app.use(express.json());
 const port=process.env.PORT;
 import user from "./src/routes/user.js";
 import vendor from "./src/routes/vendor.js";
+import admin from "./src/routes/admin.js";
 
 
 app.use('/',user);
 app.use('/vendor',vendor);
+app.use('/admin',admin);
 
 
 

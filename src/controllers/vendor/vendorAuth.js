@@ -1,6 +1,6 @@
 import joi from 'joi';
 import jwt from "jsonwebtoken"
-import {users} from "../../model/user.js";
+import {vendors} from "../../model/vendor.js";
 import bcrypt from "bcrypt";
 import { genSalt } from 'bcrypt';
 import dotenv  from "dotenv";
@@ -34,22 +34,22 @@ if(error) {
 
 
 
-    let user= await users.findOne({email:req.body.email});
-    if(user) {
+    let vendor= await vendors.findOne({email:req.body.email});
+    if(vendor) {
        return  res.status(400).json({
         success:false,
-        message:"user already exists"
+        message:"vendor already exists"
        });
     }
     const {name,email,password}=req.body;
 
     
-    user={name,email,password};
+    vendor={name,email,password};
 
     const salt=await bcrypt.genSalt(10);
-    user.password= await bcrypt.hash(user.password,salt);
+    vendor.password= await bcrypt.hash(vendor.password,salt);
 
-    mailOtpGenerator(user).then((response=>{
+    mailOtpGenerator(vendor).then((response=>{
 
         console.log(response+" iam in constrollers");
         res.json({
@@ -57,15 +57,6 @@ if(error) {
         })
     }))
 
-    
-
-    // await user.save();
-
-    // const token=jwt.sign({_id:user._id,name:user.name,email:user.email},secretKey);
-
-    // res.send(token);
-
-    
 
 
     }catch(error){
@@ -89,15 +80,15 @@ const verifyotp=async(req,res)=>{
     const tokenData=jwt.decode(otptoken);
     console.log(tokenData);
 
-    const user=new users({
+    const vendor=new vendors({
         name:tokenData.name,
         email:tokenData.email,
         password:tokenData.password
     });
 
-    await user.save();
+    await vendor.save();
 
-    const token=jwt.sign({_id:user._id,name:user.name,email:user.email},secretKey);
+    const token=jwt.sign({_id:vendor._id,name:vendor.name,email:vendor.email},secretKey);
 
 
 
@@ -130,15 +121,15 @@ const login=async(req,res)=>{
 
     const {email,password}=req.body;
 
-    let user= await users.findOne({email:email});
-    if(!user) {
+    let vendor= await vendors.findOne({email:email});
+    if(!vendor) {
        return  res.status(400).json({
         success:false,
         message:"invalid email or password"
        });
     }
 
-    let verified=bcrypt.compareSync(password,user.password);
+    let verified=bcrypt.compareSync(password,vendor.password);
 
     if(!verified){
         return  res.status(400).json({
@@ -147,7 +138,7 @@ const login=async(req,res)=>{
            });
     }
 
-    const token=jwt.sign({_id:user._id,name:user.name,email:user.email},secretKey);
+    const token=jwt.sign({_id:vendor._id,name:vendor.name,email:vendor.email},secretKey);
 
 
 
@@ -160,8 +151,40 @@ const login=async(req,res)=>{
  
 }
 
+const resendOtp=async(req,res)=>{
+
+    try{
+
+        const {otptoken}=req.body;
+        console.log("hello resend")
+        console.log(otptoken);
+        const data=jwt.decode(otptoken);
+        console.log(data);
+        const {name,email,password}=data;
+        const user={name,email,password};
+        console.log(user);
+        mailOtpGenerator(user).then((response=>{
+            
+            res.json({
+                token:response,
+                message:"OTP Resend successfully"
+                
+            })
+        }))
+    }catch(error){
+        res.status(500).json({
+            success:false,
+            message:error.message
+        });
+        console.log(error.message);
+    }
+    
+    
+ 
+}
 
 
 
 
-export {signUp,verifyotp,login};
+
+export {signUp,verifyotp,login,resendOtp};

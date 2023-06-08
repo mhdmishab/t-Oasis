@@ -23,10 +23,9 @@ const signUp=async(req,res)=>{
 })
 const {error} = Schema.validate(req.body);
 
-console.log("hellooo")
 if(error) {
     console.log("validation error")
-//    return res.status(400).send(error.details[0].message);
+
   return res.status(400).json({
         success:false,
         message:error.details[0].message
@@ -53,23 +52,18 @@ if(error) {
 
     mailOtpGenerator(user).then((response=>{
 
-        console.log(response+" iam in constrollers");
-        res.send(response);
+        res.json({
+            token:response
+        })
     }))
 
     
-
-    // await user.save();
-
-    // const token=jwt.sign({_id:user._id,name:user.name,email:user.email},secretKey);
-
-    // res.send(token);
-
-    
-
-
     }catch(error){
-    return res.status(500).send(error.message);
+       return  res.status(500).json({
+            success:false,
+            message:error.message
+        });
+       
     
 }
 
@@ -77,7 +71,7 @@ if(error) {
 
 const verifyotp=async(req,res)=>{
     const otpData=req.body;
-    const {otp,otpToken}=otpData;
+    const {otp,otptoken}=otpData;
     console.log(otpData," in controllers")
     const otpVerified=verifyOtp(otpData);
     if(!otpVerified) return  res.status(400).json({
@@ -85,8 +79,8 @@ const verifyotp=async(req,res)=>{
         message:"Otp verification failed"
        });
 
-       const tokenData=jwt.decode(otpToken);
-    console.log(tokenData);
+       const tokenData=jwt.decode(otptoken);
+   
 
     const user=new users({
         name:tokenData.name,
@@ -134,7 +128,8 @@ const login=async(req,res)=>{
            });
     }
     const password=req.body.password;
-    const validPassword=bcrypt.compare(password,user.password);
+    const validPassword=bcrypt.compareSync(password,user.password);
+    console.log(validPassword+"here password")
 
     if(!validPassword) return  res.status(400).json({
         success:false,
@@ -162,4 +157,36 @@ const login=async(req,res)=>{
 
 }
 
-export {signUp,login,verifyotp};
+const resendOtp=async(req,res)=>{
+
+    try{
+
+        const {otptoken}=req.body;
+        console.log("hello resend")
+        console.log(otptoken);
+        const data=jwt.decode(otptoken);
+        console.log(data);
+        const {name,email,password}=data;
+        const user={name,email,password};
+        console.log(user);
+        mailOtpGenerator(user).then((response=>{
+            
+            res.json({
+                token:response,
+                message:"OTP Resend successfully"
+                
+            })
+        }))
+    }catch(error){
+        res.status(500).json({
+            success:false,
+            message:error.message
+        });
+        console.log(error.message);
+    }
+    
+    
+ 
+}
+
+export {signUp,login,verifyotp,resendOtp};
