@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 
 
-const user= mongoose.Schema({
+const userSchema= mongoose.Schema({
 
     name:{
         type:String,
@@ -39,7 +39,7 @@ const user= mongoose.Schema({
     }
 });
 
-export const users=mongoose.model('user',user);
+export const Users=mongoose.model('user',userSchema);
 
 
 

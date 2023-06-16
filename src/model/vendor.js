@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 
-const vendor= mongoose.Schema({
+const vendorSchema= mongoose.Schema({
 
     name:{
         type:String,
@@ -38,4 +38,4 @@ const vendor= mongoose.Schema({
     }
 });
 
-export const vendors=mongoose.model('vendor',vendor);
+export const Vendors=mongoose.model('vendor',vendorSchema);
