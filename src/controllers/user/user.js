@@ -93,6 +93,7 @@ const verifyotp = async (req, res) => {
 
 
     return res.json({
+        _id: user._id,
         success: true,
         token: token,
         message: "otp verification success"
@@ -137,6 +138,7 @@ const login = async (req, res) => {
         const token = jwt.sign({ _id: user._id, name: user.name, email: user.email }, secretKey);
 
         return res.json({
+            _id:user._id,
             success: true,
             token: token,
             message: "login success"

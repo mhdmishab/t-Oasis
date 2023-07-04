@@ -7,8 +7,9 @@ const secretKey = process.env.JWT_SECRET_KEY;
 
 
 const login = (req, res) => {
-
+    console.log(req.body);
     const { email, password } = req.body;
+    console.log(process.env.ADMIN_EMAIL,process.env.ADMIN_PASSWORD)
 
     try {
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
@@ -21,15 +22,15 @@ const login = (req, res) => {
             })
 
         }else{
-            return res.json({
+            return res.status(400).json({
                 success:false,
                 message:"Admin login failed"
             })
         }
     } catch (error) {
-        return res.json({
+        return res.status(400).json({
             success:false,
-            message:"Admin login failed"
+            message:"Admin login failed catch"
         })
 
     }

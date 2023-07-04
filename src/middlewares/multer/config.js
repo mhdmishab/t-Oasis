@@ -29,7 +29,7 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage, fileFilter });
 const uploadImage = (req, res, next) => {
 
-  upload.single('loungeImage')(req, res, (err) => {
+  upload.single('image')(req, res, (err) => {
     console.log("req")
     if (err) {
       console.error(err);

@@ -67,6 +67,7 @@ const loungeSchema=mongoose.Schema({
         default:'pending'
         
     },
+
     date:{
         type:Date,
         default:new Date()
