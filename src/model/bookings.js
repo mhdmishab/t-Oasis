@@ -6,9 +6,9 @@ const bookingSchema=mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         Ref:"user"
     },
-    lounge_id:{
+    vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
-        Ref:"lounge"
+        Ref:"vendor"
     },
     facility_id:{
         type:mongoose.Schema.Types.ObjectId,

@@ -16,7 +16,7 @@ vendor.post('/login',login);
 vendor.post('/resendotp',resendOtp);
 vendor.post('/addlounge/:id',verification.verifyVendor,uploadImage,addLounge);
 vendor.get('/get-lounge/:id',verification.verifyVendor,getLounge);
-vendor.post('/addfacility/:loungeId/:vendorId',verification.verifyVendor,uploadImage,addFacility);
+vendor.post('/addfacility/:vendorId',verification.verifyVendor,uploadImage,addFacility);
 vendor.get('/get-facilities/:id',verification.verifyVendor,getFacilities);
 
 

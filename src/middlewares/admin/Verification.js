@@ -6,7 +6,7 @@ dotenv.config();
 const verifyAdmin=(req,res,next)=>{
     
     const token = req.headers.authorization;
-    console.log(token);
+    
 
     if(!token){
         const error = new Error('No token provided');
@@ -15,7 +15,7 @@ const verifyAdmin=(req,res,next)=>{
     }
 
     try {
-        console.log("inside try")
+        
         const decoded = jwt.verify(token.split(' ')[1], process.env.JWT_SECRET_KEY);
        
         if(decoded){

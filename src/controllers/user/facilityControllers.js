@@ -12,7 +12,7 @@ const getAllFacilities = async (req, res) => {
 
         console.log("helo facility here")
 
-        const facilities = await Facilities.find({ lounge_id: id }, { isBlocked: false });
+        const facilities = await Facilities.find({ vendor_id: id }, { isBlocked: false });
         console.log(facilities)
 
         return res.json({
@@ -28,14 +28,14 @@ const getAllFacilities = async (req, res) => {
 const bookFacility = async (req, res) => {
 
     console.log(req.body);
-    console.log(req.params);
+    console.log(req.params,"params");
     const { bookedDate, bookedSlots } = req.body;
-    const { userId, loungeId, facilityId } = req.params;
+    const { userId, vendorId, facilityId } = req.params;
 
 
     const booking = new Bookings({
         user_id: userId,
-        lounge_id: loungeId,
+        vendor_id: vendorId,
         facility_id: facilityId,
         booked_date: bookedDate,
         booked_slots: bookedSlots
@@ -55,10 +55,10 @@ const bookFacility = async (req, res) => {
 const getAvailableSlots = async (req, res) => {
     // console.log(req.body)
     const date = req.params.date;
-    const loungeId=req.params.loungeId
+    const vendorId=req.params.vendorId
     const facilityId=req.params.facilityId
-    console.log(date,loungeId,facilityId);
-    const bookings = await Bookings?.find({$and:[{lounge_id:loungeId},{facility_id:facilityId},{ booked_date: date }]});
+    console.log(date,vendorId,facilityId);
+    const bookings = await Bookings?.find({$and:[{vendor_id:vendorId},{facility_id:facilityId},{ booked_date: date }]});
     console.log(bookings)
     const bookedSlots = bookings?.map((booking) => booking.booked_slots);
     console.log(bookedSlots)

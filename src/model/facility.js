@@ -7,11 +7,7 @@ const facilitySchema= mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         Ref:"vendor"
     },
-    lounge_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        Ref:"lounge"
-    },
-
+  
     facilityName:{
         type:String,
         required:true

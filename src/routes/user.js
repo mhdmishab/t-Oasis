@@ -15,8 +15,8 @@ user.post('/verifyotp',verifyotp);
 user.post('/resendotp',resendOtp);
 user.get('/get-lounges',getAllLounges);
 user.get('/get-facilities/:id',getAllFacilities);
-user.post('/book-facility/:userId/:loungeId/:facilityId',Verification.verifyUser,bookFacility);
-user.get('/get-slots/:date/:loungeId/:facilityId',getAvailableSlots);
+user.post('/book-facility/:userId/:vendorId/:facilityId',Verification.verifyUser,bookFacility);
+user.get('/get-slots/:date/:vendorId/:facilityId',getAvailableSlots);
 
 export default user;
 
