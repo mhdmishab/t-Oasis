@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const verifyVendor=(req,res,next)=>{
-   
+const verifyAdmin=(req,res,next)=>{
+    
     const token = req.headers.authorization;
     console.log(token);
 
@@ -27,4 +27,4 @@ const verifyVendor=(req,res,next)=>{
     }
 }
 
-export default {verifyVendor}
+export default {verifyAdmin}

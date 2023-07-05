@@ -15,7 +15,7 @@ const addLounge = async (req, res) => {
     try {
         const Schema = joi.object({
             loungeName: joi.string().min(3).max(20).required(),
-            loungeDescription: joi.string().min(5).max(100).required(),
+            loungeDescription: joi.string().min(5).max(4000).required(),
             loungeDistrict: joi.string().min(3).max(100).required(),
             loungeState: joi.string().min(3).max(100).required(),
             loungeLocation:joi.string(),
