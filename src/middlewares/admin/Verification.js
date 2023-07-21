@@ -23,7 +23,10 @@ const verifyAdmin=(req,res,next)=>{
     }
       
     } catch (error) {
-      next(error)
+        return res.status(500).json({
+            message:"Inavlid Request",
+            success:false
+        })
     }
 }
 

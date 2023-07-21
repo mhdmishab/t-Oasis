@@ -32,7 +32,7 @@ const signUp = async (req, res) => {
 
         }
 
-
+    
 
         let vendor = await Vendors.findOne({ email: req.body.email });
         if (vendor) {
@@ -53,6 +53,7 @@ const signUp = async (req, res) => {
 
             console.log(response + " iam in constrollers");
             res.json({
+                success:true,
                 token: response
             })
         }))
@@ -102,6 +103,7 @@ const verifyotp = async (req, res) => {
 }
 
 const login = async (req, res) => {
+    console.log("inside vender login")
 
     const Schema = joi.object({
 
@@ -124,18 +126,21 @@ const login = async (req, res) => {
 
     let vendor = await Vendors.findOne({ email: email });
     if (!vendor) {
+        console.log("invalid mail vendor");
         return res.status(400).json({
+            
             success: false,
-            message: "invalid email or password"
+            message: "invalid vendor email or password"
         });
     }
 
     let verified = bcrypt.compareSync(password, vendor.password);
 
     if (!verified) {
+        console.log("invalid password vendor");
         return res.status(400).json({
             success: false,
-            message: "invalid email or password"
+            message: "invalid vendor email or password"
         });
     }
 

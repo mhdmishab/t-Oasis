@@ -33,6 +33,15 @@ const userSchema= mongoose.Schema({
         default:false
     },
 
+    image:{
+        public_id:{
+            type:String,
+        },
+        url:{
+            type:String,
+        }
+    },
+
     date:{
         type:Date,
         default:new Date()

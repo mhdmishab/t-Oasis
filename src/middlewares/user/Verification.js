@@ -8,6 +8,7 @@ const verifyUser=(req,res,next)=>{
     const token = req.headers.authorization;
 
     if(!token){
+        console.log("user header authorization")
         const error = new Error('No token provided');
         error.statusCode = 401;
         return next(error);
@@ -22,7 +23,11 @@ const verifyUser=(req,res,next)=>{
     }
       
     } catch (error) {
-      next(error)
+    //   next(error)
+    return res.status(500).json({
+        message:"Inavlid Request",
+        success:false
+    })
     }
 }
 

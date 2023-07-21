@@ -5,7 +5,7 @@ const facilitySchema= mongoose.Schema({
 
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
-        Ref:"vendor"
+        ref:"vendor"
     },
   
     facilityName:{

@@ -6,7 +6,7 @@ const loungeSchema=mongoose.Schema({
 
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
-        Ref:"vendor"
+        ref:"vendor"
     },
 
     loungeName:{
@@ -64,6 +64,7 @@ const loungeSchema=mongoose.Schema({
     },
     isApproved:{
         type:String,
+        enum:['pending','approved','rejected'],
         default:'pending'
         
     },

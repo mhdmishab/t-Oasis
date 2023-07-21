@@ -4,19 +4,24 @@ import mongoose from 'mongoose';
 const bookingSchema=mongoose.Schema({
     user_id:{
         type:mongoose.Schema.Types.ObjectId,
-        Ref:"user"
+        ref:"user"
     },
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
-        Ref:"vendor"
+        ref:"vendor"
+    },
+    lounge_id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"lounge"
     },
     facility_id:{
         type:mongoose.Schema.Types.ObjectId,
-        Ref:"facility"
+        ref:"facility"
     },
     status:{
         type:String,
-        default:"pending"
+        enum:['booked','cancelled','completed'],
+        default:"booked"
     },
     booked_date:{
         type:Date,
@@ -26,6 +31,18 @@ const bookingSchema=mongoose.Schema({
         type:String,
         required:true
     }],
+    booked_id:{
+        type:String,
+        required:true
+    },
+    payment_id:{
+        type:String,
+        required:true
+    },
+    amount_paid:{
+        type:Number,
+        required:true
+    },
     date:{
         type:Date,
         default:new Date()
