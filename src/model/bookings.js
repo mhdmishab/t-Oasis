@@ -43,6 +43,14 @@ const bookingSchema=mongoose.Schema({
         type:Number,
         required:true
     },
+    review_added:{
+        type:Boolean,
+        default:false
+    },
+    complaint_added:{
+        type:Boolean,
+        default:false
+    },
     date:{
         type:Date,
         default:new Date()

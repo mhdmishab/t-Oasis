@@ -37,6 +37,14 @@ const facilitySchema= mongoose.Schema({
 
         
     },
+    reviews:[{
+        rating:{
+            type:Number
+        },
+        review_text:{
+            type:String
+        }
+    }],
     isBlocked:{
         type:Boolean,
         default:false

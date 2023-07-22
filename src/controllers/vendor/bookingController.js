@@ -1,5 +1,6 @@
 import { Bookings } from "../../model/bookings.js"
 import cron from 'node-cron'
+import { Facilities } from "../../model/facility.js";
 
 
 const getBookings=async(req,res)=>{
@@ -32,20 +33,7 @@ try{
 
 export {getBookings};
 
-// cron.schedule("* * * * *", async function generateMonthlyRent() {
-//     try {
-//       const currentDate = new Date();
-//       const bookings = await Bookings.find({ status: "booked", date: { $lt: currentDate } });
-      
-//       bookings.forEach(async (booking) => {
-//         booking.status = "completed";
-//         await booking.save();
-//       });
-      
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   });
+
 
 cron.schedule("0 * * * *", async function updateBookingStatus() {
     try {
@@ -69,6 +57,7 @@ cron.schedule("0 * * * *", async function updateBookingStatus() {
       console.error(error);
     }
   });
+
 
 
 

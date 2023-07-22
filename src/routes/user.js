@@ -1,6 +1,6 @@
 import express from "express";
 
-import {signUp,login,verifyotp, resendOtp, getProfile,uploadImageUser, cancelBooking} from "../controllers/user/user.js"
+import {signUp,login,verifyotp, resendOtp, getProfile,uploadImageUser, cancelBooking, addReview, addComplaint} from "../controllers/user/user.js"
 import { getAllLounges } from "../controllers/user/loungeControllers.js";
 import { bookFacility, bookingPayment, getAllFacilities, getAvailableSlots, paymentVerify} from "../controllers/user/facilityControllers.js";
 import Verification from "../middlewares/user/Verification.js";
@@ -21,6 +21,8 @@ user.post('/booking-payment/:facilityId',Verification.verifyUser,bookingPayment)
 user.patch('/upload-image/:id',Verification.verifyUser,uploadImage,uploadImageUser);
 user.get('/user-profile/:id',Verification.verifyUser,getProfile);
 user.patch('/cancel-booking/:userId/:bookId',Verification.verifyUser,cancelBooking);
+user.post('/add-review/:id',Verification.verifyUser,addReview);
+user.post('/add-complaint/:id',Verification.verifyUser,addComplaint);
 user.post('/verify-payment',Verification.verifyUser,paymentVerify);
 user.get('/get-slots/:date/:vendorId/:facilityId',getAvailableSlots);
 

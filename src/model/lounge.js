@@ -57,6 +57,13 @@ const loungeSchema=mongoose.Schema({
 
         }
     ],
+
+    reviews:[{
+        rating:{
+            type:Number
+        }
+    }],
+
     isBlocked:{
         type:Boolean,
         default:false,

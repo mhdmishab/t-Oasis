@@ -7,6 +7,9 @@ import dotenv from "dotenv";
 import { mailOtpGenerator } from "../../helpers/otp/mailOtpGenerator.js"
 import { verifyOtp } from '../../helpers/otp/verifyOtp.js';
 import { Bookings } from '../../model/bookings.js';
+import { Facilities } from '../../model/facility.js';
+import { Lounges } from '../../model/lounge.js';
+import { Complaints } from '../../model/compalints.js';
 dotenv.config();
 
 const secretKey = process.env.JWT_SECRET_KEY;
@@ -291,4 +294,90 @@ const cancelBooking=async(req,res)=>{
     }
 }
 
-export { signUp, login, verifyotp, resendOtp,getProfile,uploadImageUser,cancelBooking };
+const addReview = async (req, res) => {
+    try {
+      const bookingId = req.params.id;
+      const { rating, ratingText } = req.body;
+      const review = { rating, ratingText };
+      console.log(bookingId, rating, ratingText);
+  
+      const booking = await Bookings.findById(bookingId)
+        .populate("user_id", "_id email")
+        .populate("lounge_id", "_id loungeName loungeDistrict")
+        .populate("facility_id", "_id facilityName")
+        .exec();
+  
+      console.log(booking.lounge_id);
+  
+  
+    
+    const facilityId = booking.facility_id._id;
+    const loungeId = booking.lounge_id._id
+    
+    const updatedFacility = await Facilities.findByIdAndUpdate(
+        facilityId,
+        {
+            $push: {
+                reviews: {
+                    $each: [{rating:rating,review_text:ratingText}],
+                    $slice: -100,
+                },
+            },
+        },
+        { new: true }
+        ).exec();
+        
+        console.log("Updated facility with new review:", updatedFacility);
+        
+        const updatedLounge = await Lounges.findByIdAndUpdate(
+            loungeId,
+            {
+                $push: {
+                    reviews: {
+                        $each: [{rating}],
+                        $slice: -100,
+                    },
+                },
+            },
+            { new: true }
+            ).exec();
+            
+            console.log("Updated facility with new review:", updatedLounge);
+            
+            await Bookings.updateOne({ _id: bookingId }, { $set: { review_added: true } });
+
+            res.status(200).json({ message: "review added successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "An error occurred while adding review" });
+    }
+  };
+
+const addComplaint = async (req, res) => {
+    try {
+        const bookingId = req.params.id;
+        const { subject, content } = req.body;
+        console.log(subject, content, bookingId);
+
+        const newComplaint = new Complaints({
+            booking_id: bookingId,
+            complaint: {
+                subject: subject,
+                content: content,
+            }
+        })
+
+        newComplaint.save();
+
+        await Bookings.updateOne({ _id: bookingId }, { $set: { complaint_added: true } });
+
+        res.status(200).json({ message: "Complaint posted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while adding complaint" });
+    }
+
+}
+  
+
+export { signUp, login, verifyotp, resendOtp,getProfile,uploadImageUser,cancelBooking,addReview,addComplaint };
