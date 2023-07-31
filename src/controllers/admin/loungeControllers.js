@@ -6,7 +6,7 @@ const getLounge=async(req,res)=>{
 try{
 
     const lounges=await Lounges.find();
-    console.log(lounges)
+    // console.log(lounges)
 
     return res.json({
         success: true,

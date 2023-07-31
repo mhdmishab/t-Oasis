@@ -4,7 +4,7 @@ import { Facilitytypes } from "../../model/facilitytypes.js";
 const addnewFacility=async(req,res)=>{
 
 try{
-    console.log(req.body);
+    // console.log(req.body);
     const {facilitytypeName}=req.body;
 
     const facilityName=await Facilitytypes.findOne({facilitytypeName:facilitytypeName});

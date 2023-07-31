@@ -14,12 +14,12 @@ const getAllFacilities = async (req, res) => {
     try {
 
         const id = req.params.id;
-        console.log(id);
+        // console.log(id);
 
-        console.log("helo facility here")
+        // console.log("helo facility here")
 
         const facilities = await Facilities.find({ vendor_id: id, isBlocked: false });
-        console.log(facilities)
+        // console.log(facilities)
 
         return res.status(200).json({
             success: true,

@@ -5,6 +5,7 @@ import { getAllLounges } from "../controllers/user/loungeControllers.js";
 import { bookFacility, bookingPayment, getAllFacilities, getAvailableSlots, paymentVerify} from "../controllers/user/facilityControllers.js";
 import Verification from "../middlewares/user/Verification.js";
 import uploadImage from "../middlewares/multer/config.js";
+import { getChatConversation, privateChat } from "../controllers/user/chatController.js";
 
 
 const user=express.Router();
@@ -18,6 +19,11 @@ user.get('/get-lounges',getAllLounges);
 user.get('/get-facilities/:id',getAllFacilities);
 user.post('/book-facility/:userId/:vendorId/:loungeId/:facilityId',Verification.verifyUser,bookFacility);
 user.post('/booking-payment/:facilityId',Verification.verifyUser,bookingPayment);
+
+user.post('/chat-sendmessage/:vendorId/:userId',Verification.verifyUser,privateChat);
+user.get('/chat-conversations/:vendorId/:userId',Verification.verifyUser,getChatConversation);
+
+
 user.patch('/upload-image/:id',Verification.verifyUser,uploadImage,uploadImageUser);
 user.get('/user-profile/:id',Verification.verifyUser,getProfile);
 user.patch('/cancel-booking/:userId/:bookId',Verification.verifyUser,cancelBooking);
