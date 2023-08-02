@@ -12,7 +12,7 @@ dbConnection();
 const app=express();
 
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "http://16.171.164.134:3000",
 }));
 app.use(express.json());
 
@@ -24,7 +24,7 @@ const server = createServer(app);
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000", 
+    origin: "http://16.171.164.134:3000", 
   },
 });
 
