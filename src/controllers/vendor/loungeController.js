@@ -33,9 +33,9 @@ const addLounge = async (req, res) => {
             loungeDescription: joi.string().min(5).max(4000).required(),
             loungeDistrict: joi.string().min(3).max(100).required(),
             loungeState: joi.string().min(3).max(100).required(),
-            // loungeLocation: joi.string(),
-            // loungeLat: joi.number(),
-            // loungeLng: joi.number(),
+            loungeLocation: joi.string(),
+            loungeLat: joi.number(),
+            loungeLng: joi.number(),
 
         })
         const { error } = Schema.validate(req.body);
