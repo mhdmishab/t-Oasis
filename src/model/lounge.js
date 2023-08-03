@@ -32,16 +32,16 @@ const loungeSchema=mongoose.Schema({
    
     loungeLat:{
         type:Number,
-        required:true
+       
        },
     loungeLng:{
         type:Number,
-        required:true
+       
        },
        
     loungeLocation:{
         type:String,
-        required:true
+       
             
     },
     loungeImages:[
