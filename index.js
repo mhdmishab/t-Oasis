@@ -11,11 +11,11 @@ dotenv.config();
 dbConnection();
 const app=express();
 
-// app.use(cors({
-//     origin: "http://localhost:3000",
-// }));
+app.use(cors({
+    origin: ["http://localhost:3000","https://toasis.restinpillows.shop","https://toasis.netlify.app"]
+}));
 
-app.use(cors());
+
 app.use(express.json());
 
 
@@ -26,7 +26,7 @@ const server = createServer(app);
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000", 
+    origin: ["http://localhost:3000","https://toasis.restinpillows.shop","https://toasis.netlify.app"] 
   },
 });
 
