@@ -56,9 +56,9 @@ const addLounge = async (req, res) => {
             loungeDistrict: loungeDistrict,
             loungeState: loungeState,
             loungeDescription: loungeDescription,
-            loungeLat: loungeLat,
-            loungeLng: loungeLng,
-            loungeLocation: loungeLocation,
+            loungeLat: loungeLat || 0,
+            loungeLng: loungeLng || 0,
+            loungeLocation: loungeLocation || '',
             loungeImages: {
                 public_id: filename,
                 url: path,
