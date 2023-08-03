@@ -35,27 +35,61 @@ export {getBookings};
 
 
 
-cron.schedule("0 * * * *", async function updateBookingStatus() {
-    try {
-      console.log("try insdie cron")
-      const currentDate = new Date();
-      const currentHour = currentDate.getHours().toString().padStart(2, '0'); // Get the current hour in 24-hour format with leading zero if necessary
+cron.schedule("* * * * *", async function updateBookingStatus() {
+    // try {
+    //   console.log("try insdie cron")
+    //   const currentDate = new Date();
+    //   const currentHour = currentDate.getHours().toString().padStart(2, '0'); // Get the current hour in 24-hour format with leading zero if necessary
   
-      const bookings = await Bookings.find({ status: "booked", date: { $lt: currentDate } });
+    //   const bookings = await Bookings.find({ status: "booked", date: { $lt: currentDate } });
       
-      bookings.forEach(async (booking) => {
-        const { booked_slots } = booking;
+    //   bookings.forEach(async (booking) => {
+    //     const { booked_slots } = booking;
   
-        // Check if the current hour is in the booked_slots array
-        if (booked_slots.includes(currentHour)) {
+    //     // Check if the current hour is in the booked_slots array
+    //     if (booked_slots.includes(currentHour)) {
+    //       booking.status = "completed";
+    //       await booking.save();
+    //     }
+    //   });
+      
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    try {
+      console.log("try inside updateBookingStatus");
+      const currentDate = new Date();
+      const currentHour = currentDate.getHours();
+      const currentMinute = currentDate.getMinutes();
+    
+      // Find bookings where the status is "booked" and the date is less than or equal to the current date
+      const bookings = await Bookings.find({ status: "booked", date: { $lte: currentDate } }).exec();
+    
+      for (const booking of bookings) {
+        const { date, booked_slots } = booking;
+    
+        // Check if the booked date is less than the current date
+        if (date < currentDate) {
           booking.status = "completed";
           await booking.save();
+        } else if (date.toDateString() === currentDate.toDateString()) {
+          // If the booked date is equal to the current date, check the booked time
+          const allSlotsBeforeCurrentTime = booked_slots.every(slot => {
+            const [slotHour, slotMinute] = slot.split(":").map(Number);
+            return slotHour < currentHour || (slotHour === currentHour && slotMinute < currentMinute);
+          });
+    
+          if (allSlotsBeforeCurrentTime) {
+            booking.status = "completed";
+            await booking.save();
+          }
         }
-      });
-      
+      }
+    
     } catch (error) {
       console.error(error);
     }
+    
   });
 
 
