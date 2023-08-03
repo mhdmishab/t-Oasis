@@ -38,7 +38,16 @@ const addLounge = async (req, res) => {
             // loungeLng: joi.number(),
 
         })
-        const { error } = Schema.validate(loungeName, loungeDistrict, loungeState,loungeDescription);
+
+
+      const dataToValidate = {
+        loungeName: 'Your Lounge Name',
+        loungeDescription: 'Your Lounge Description',
+        loungeDistrict: 'Your Lounge District',
+        loungeState: 'Your Lounge State',
+      };
+
+      const { error } = Schema.validate(dataToValidate);
 
         if (error) {
             if (error) {
@@ -56,9 +65,9 @@ const addLounge = async (req, res) => {
             loungeDistrict: loungeDistrict,
             loungeState: loungeState,
             loungeDescription: loungeDescription,
-            loungeLat: loungeLat || 0,
-            loungeLng: loungeLng || 0,
-            loungeLocation: loungeLocation || '',
+            loungeLat: loungeLat,
+            loungeLng: loungeLng,
+            loungeLocation: loungeLocation,
             loungeImages: {
                 public_id: filename,
                 url: path,

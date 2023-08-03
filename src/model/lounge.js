@@ -31,11 +31,11 @@ const loungeSchema=mongoose.Schema({
     },
    
     loungeLat:{
-        type:Number,
+        type:mongoose.Schema.Types.Mixed,
        
        },
     loungeLng:{
-        type:Number,
+        type:mongoose.Schema.Types.Mixed,
        
        },
        
