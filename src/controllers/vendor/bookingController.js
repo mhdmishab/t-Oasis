@@ -35,27 +35,8 @@ export {getBookings};
 
 
 
-cron.schedule("* * * * *", async function updateBookingStatus() {
-    // try {
-    //   console.log("try insdie cron")
-    //   const currentDate = new Date();
-    //   const currentHour = currentDate.getHours().toString().padStart(2, '0'); // Get the current hour in 24-hour format with leading zero if necessary
-  
-    //   const bookings = await Bookings.find({ status: "booked", date: { $lt: currentDate } });
-      
-    //   bookings.forEach(async (booking) => {
-    //     const { booked_slots } = booking;
-  
-    //     // Check if the current hour is in the booked_slots array
-    //     if (booked_slots.includes(currentHour)) {
-    //       booking.status = "completed";
-    //       await booking.save();
-    //     }
-    //   });
-      
-    // } catch (error) {
-    //   console.error(error);
-    // }
+cron.schedule("0 * * * *", async function updateBookingStatus() {
+   
     try {
       console.log("try inside updateBookingStatus");
       const currentDate = new Date();

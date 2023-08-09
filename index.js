@@ -59,7 +59,7 @@ io.on("connection", (socket) => {
 
     socket.on("new message", (newMessageReceived) => {
         console.log(newMessageReceived)
-        var recieverId = newMessageReceived.recieverId;
+        var recieverId = newMessageReceived.conversationId;
 
 
         if (!newMessageReceived.conversationId) return console.log("chat not defined");

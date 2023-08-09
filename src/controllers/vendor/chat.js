@@ -119,7 +119,7 @@ const getConversations = async (req, res) => {
             .populate({
                 path: 'userId',
                 select: '-date -password -__v -image -isBlocked', // Excludes the specified fields from the populated user documents
-            })
+            }).sort({date:-1})
             .exec();
 
         // console.log(conversations);

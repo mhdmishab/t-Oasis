@@ -448,8 +448,13 @@ const getDashboard = async (req, res) => {
       console.log("Revenue:", totalRevenue);
       console.log("average loungeRating:", avgLoungeRating);
 
+     
+       const bookings=await Bookings.find({vendor_id:vendorId}).populate("user_id","email").populate("lounge_id","loungeName loungeDistrict")
+       .populate("facility_id","facilityName").sort({ date: -1 }).exec()
+      
+      console.log(bookings);
   
-      res.status(200).json({ bookingChart,revenueChart,pendingloungenumbers,loungenumbers,pendingbookingnumbers,compleatedbookingnumbers,cancelledbookingnumbers,totalRevenue,avgLoungeRating });
+      res.status(200).json({bookings,bookingChart,revenueChart,pendingloungenumbers,loungenumbers,pendingbookingnumbers,compleatedbookingnumbers,cancelledbookingnumbers,totalRevenue,avgLoungeRating });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ success: false, message: "Failed to get vendor dashboard" });
