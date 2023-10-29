@@ -12,7 +12,7 @@ dbConnection();
 const app=express();
 
 app.use(cors({
-    origin: ["http://localhost:3000","https://toasis.restinpillows.shop","https://toasis.netlify.app"]
+    origin: ["http://localhost:3000","https://toasisnew.restinpillows.shop","https://toasis.netlify.app"]
 }));
 
 
